@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Jelli Nook",
+    "description": "Discover recipes for 100 adorable Jellies in this cozy, crafting game!",
+    "imageUrl": "/games/jellinook.jpg",
+    "steamUrl": "https://store.steampowered.com/app/3667420/Jelli_Nook/",
+    "status": "In Development",
+    "mainShowcase": true
+  },
+  {
+    "title": "RIP: Ridiculously Injury Prone",
+    "description": "Will you survive space camp? Complete mundane tasks for your mother without getting hurt and prove you're good to go!",
+    "imageUrl": "/games/rip.jpg",
+    "steamUrl": "https://store.steampowered.com/app/2431580/RIP_Ridiculously_Injury_Prone/",
+    "status": "On hold",
+    "mainShowcase": true
+  }
+]
