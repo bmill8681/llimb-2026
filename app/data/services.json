@@ -1,26 +1,22 @@
 [
   {
     "title": "Web Development",
-    "description": "Custom web applications built with modern technologies. From responsive marketing sites to complex web apps, we deliver performant, accessible, and visually stunning solutions tailored to your needs.",
-    "images": [
-      "/services/web-dev-1.jpg",
-      "/services/web-dev-2.jpg"
-    ]
+    "description": "Custom web applications built with modern technologies. From responsive marketing sites to complex web apps, we deliver performant, accessible, and visually stunning solutions tailored to your games needs.",
+    "images": []
   },
   {
     "title": "Game Prototyping",
-    "description": "Rapid game prototyping to test and validate your game concepts. We help bring your ideas to life quickly, allowing you to iterate on mechanics and gameplay before committing to full development.",
+    "description": "Rapid game prototyping to test and validate your game concepts. We help bring your ideas to life quickly, allowing you to iterate on mechanics and gameplay before committing to full development. Prototyping is primarily done in Unity Engine, but we're able to work with Godot as well.",
     "images": [
-      "/services/game-proto-1.jpg",
-      "/services/game-proto-2.jpg"
+      "/services/prototyping-1.png",
+      "/services/prototyping-2.png",
+      "/services/prototyping-3.png",
+      "/services/prototyping-4.png"
     ]
   },
   {
     "title": "3D Modeling",
     "description": "Stylized 3D modeling for games, visualizations, and digital media. From characters and props to environments, we create high-quality assets that bring your vision to life.",
-    "images": [
-      "/services/3d-modeling-1.jpg",
-      "/services/3d-modeling-2.jpg"
-    ]
+    "images": []
   }
 ]

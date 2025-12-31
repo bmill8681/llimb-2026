@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/app/components/Button";
 import { HiOutlineEnvelope } from "react-icons/hi2";
 
@@ -21,8 +22,15 @@ export function NavBar() {
     <nav className={`fixed top-0 left-0 right-0 z-50 ${showSolidBackground ? "bg-slate-800" : "bg-zinc-900/95 backdrop-blur-sm"}`}>
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-6">
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold text-white">
-          LLimb Games
+        <Link href="/" className="flex items-center gap-2 text-xl font-bold text-white">
+          <Image
+            src="/LLimbLogo.png"
+            alt="LLimb Games Logo"
+            width={40}
+            height={40}
+            className="h-8 w-auto"
+          />
+          <span style={{ fontFamily: "Impact, sans-serif", letterSpacing: "0.1rem" }}>LLimb Games</span>
         </Link>
 
         {/* Desktop Links */}
