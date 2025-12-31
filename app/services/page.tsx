@@ -1,7 +1,19 @@
+import type { Metadata } from "next";
 import { NavBar } from "@/app/components/NavBar";
 import { Footer } from "@/app/components/Footer";
 import { ServicesList } from "@/app/components/ServicesList";
 import { Button } from "@/app/components/Button";
+
+export const metadata: Metadata = {
+  title: "Services",
+  description:
+    "Professional services from LLimb Games including web development, game prototyping, and 3D modeling. Bring your ideas to life with our expertise.",
+  openGraph: {
+    title: "Services | LLimb Games",
+    description:
+      "Professional services from LLimb Games including web development, game prototyping, and 3D modeling.",
+  },
+};
 
 export default function ServicesPage() {
   return (

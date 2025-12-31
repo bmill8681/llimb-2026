@@ -1,8 +1,20 @@
+import type { Metadata } from "next";
 import { NavBar } from "@/app/components/NavBar";
 import { Footer } from "@/app/components/Footer";
 import { GameCard } from "@/app/components/GameCard";
 import { PrototypeList } from "@/app/components/PrototypeList";
 import gamesData from "@/app/data/games.json";
+
+export const metadata: Metadata = {
+  title: "Games",
+  description:
+    "Explore games and prototypes from LLimb Games. From published titles like Jelli Nook to experimental game jam prototypes.",
+  openGraph: {
+    title: "Games | LLimb Games",
+    description:
+      "Explore games and prototypes from LLimb Games. From published titles to experimental game jam prototypes.",
+  },
+};
 
 export default function GamesPage() {
   return (
