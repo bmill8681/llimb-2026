@@ -57,6 +57,12 @@ export function ImageCarouselModal({
 
   if (!isOpen) return null;
 
+  const handleBackdropClick = (e: React.MouseEvent | React.TouchEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -65,16 +71,15 @@ export function ImageCarouselModal({
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={onClose}
+          onClick={handleBackdropClick}
+          onTouchEnd={handleBackdropClick}
         >
           {/* Close Button */}
           <button
-            className="absolute top-4 right-4 cursor-pointer text-white transition-colors hover:text-zinc-300"
-            onClick={(e) => {
-              e.stopPropagation();
-              onClose();
-            }}
+            type="button"
+            className="absolute top-4 right-4 z-20 cursor-pointer rounded-full bg-zinc-800/80 p-3 text-white transition-colors hover:bg-zinc-700 active:bg-zinc-600"
             aria-label="Close modal"
+            onClick={onClose}
           >
             <svg
               className="h-8 w-8"
@@ -92,14 +97,15 @@ export function ImageCarouselModal({
           </button>
 
           {/* Main Image Area */}
-          <div
-            className="relative flex w-full max-w-4xl flex-1 items-center justify-center"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="pointer-events-none relative flex max-w-4xl items-center justify-center">
             {/* Previous Button */}
             <button
-              className="absolute left-0 z-10 rounded-full bg-zinc-800/80 p-3 text-white transition-colors hover:bg-zinc-700"
-              onClick={handlePrevious}
+              type="button"
+              className="pointer-events-auto absolute left-2 z-10 rounded-full bg-zinc-800/80 p-3 text-white transition-colors hover:bg-zinc-700 active:bg-zinc-600"
+              onClick={e => {
+                e.stopPropagation();
+                handlePrevious();
+              }}
               aria-label="Previous image"
             >
               <svg
@@ -118,19 +124,25 @@ export function ImageCarouselModal({
             </button>
 
             {/* Current Image */}
-            <div className="relative h-[60vh] w-full">
+            <div className="pointer-events-auto" onClick={e => {e.stopPropagation();}}>
               <Image
                 src={images[currentIndex]}
                 alt={`Image ${currentIndex + 1}`}
-                fill
-                className="object-contain"
+                width={0}
+                height={0}
+                sizes="100vw"
+                className="h-auto max-h-[60vh] w-auto max-w-full"
               />
             </div>
 
             {/* Next Button */}
             <button
-              className="absolute right-0 z-10 rounded-full bg-zinc-800/80 p-3 text-white transition-colors hover:bg-zinc-700"
-              onClick={handleNext}
+              type="button"
+              className="pointer-events-auto absolute right-2 z-10 rounded-full bg-zinc-800/80 p-3 text-white transition-colors hover:bg-zinc-700 active:bg-zinc-600"
+              onClick={e => {
+                e.stopPropagation();
+                handleNext();
+              }}
               aria-label="Next image"
             >
               <svg
@@ -150,15 +162,16 @@ export function ImageCarouselModal({
           </div>
 
           {/* Thumbnails */}
-          <div
-            className="mt-4 flex gap-2 overflow-x-auto scrollbar-hide"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="pointer-events-none mt-4 flex gap-2 overflow-x-auto scrollbar-hide">
             {images.map((src, index) => (
               <button
+                type="button"
                 key={src}
-                onClick={() => setCurrentIndex(index)}
-                className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 transition-colors ${
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setCurrentIndex(index);
+                }}
+                className={`pointer-events-auto relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-md border-2 transition-colors ${
                   index === currentIndex
                     ? "border-amber-400"
                     : "border-transparent hover:border-zinc-500"
