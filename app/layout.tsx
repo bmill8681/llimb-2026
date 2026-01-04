@@ -31,8 +31,8 @@ export const metadata: Metadata = {
   authors: [{ name: "LLimb Games" }],
   creator: "LLimb Games",
   icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
+    icon: "/icon.png",
+    apple: "/icon.png",
   },
   openGraph: {
     type: "website",

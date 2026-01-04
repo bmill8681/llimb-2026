@@ -43,6 +43,18 @@ export function ImageCarouselModal({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isOpen, onClose, handlePrevious, handleNext]);
 
+  // Disable body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
@@ -57,8 +69,11 @@ export function ImageCarouselModal({
         >
           {/* Close Button */}
           <button
-            className="absolute top-4 right-4 text-white transition-colors hover:text-zinc-300"
-            onClick={onClose}
+            className="absolute top-4 right-4 cursor-pointer text-white transition-colors hover:text-zinc-300"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             aria-label="Close modal"
           >
             <svg
