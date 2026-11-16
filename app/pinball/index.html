@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no">
+    <title>Public House Pinball</title>
+    <link rel="icon" href="data:,">
+    <style>
+      :root { --bg: #d9431e; --ink: #fff4ec; --ink-dim: rgba(255, 244, 236, 0.75); --key-bg: rgba(0, 0, 0, 0.22); }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; height: 100%; background: var(--bg); color: var(--ink); overflow: hidden;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      body { display: flex; flex-direction: column; }
+      #stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; padding: 16px 16px 0; }
+      #frame { position: relative; }
+      #unity-canvas { display: block; width: 100%; height: 100%; background: #000; outline: none; }
+      #loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+        background: var(--bg); font-size: 15px; letter-spacing: 0.04em; color: var(--ink-dim); }
+      #bar { width: min(260px, 60%); height: 8px; border-radius: 4px; background: var(--key-bg); overflow: hidden; }
+      #bar-fill { width: 0; height: 100%; background: var(--ink); transition: width 0.15s; }
+      #warning { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); max-width: 90%; display: none; }
+      #warning div { padding: 10px 14px; border-radius: 6px; background: #fff; color: #222; margin-bottom: 6px; }
+      #controls { flex: none; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px 32px;
+        padding: 14px 16px 18px; font-size: 15px; }
+      .control { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+      .control span { color: var(--ink-dim); }
+      kbd { font: 600 13px/1 ui-monospace, Consolas, monospace; padding: 5px 8px; border-radius: 5px; background: var(--key-bg);
+        border: 1px solid rgba(255, 255, 255, 0.25); color: var(--ink); }
+      #fullscreen { font: inherit; font-size: 13px; color: var(--ink); background: var(--key-bg); border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 5px; padding: 5px 10px; cursor: pointer; }
+      #fullscreen:hover { background: rgba(0, 0, 0, 0.35); }
+      body.mobile #stage { padding: 0; }
+      body.mobile #controls { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="frame">
+        <canvas id="unity-canvas" tabindex="-1"></canvas>
+        <div id="loading"><div>Loading…</div><div id="bar"><div id="bar-fill"></div></div></div>
+        <div id="warning"></div>
+      </div>
+    </div>
+    <div id="controls">
+      <div class="control"><kbd>Left Shift</kbd><kbd>Right Shift</kbd><span>Flippers</span></div>
+      <div class="control"><kbd>Z</kbd><kbd>?</kbd><span>Nudge the machine</span></div>
+      <button id="fullscreen" type="button">Fullscreen</button>
+    </div>
+    <script>
+      var canvas = document.getElementById("unity-canvas");
+      var frame = document.getElementById("frame");
+      var stage = document.getElementById("stage");
+      var ASPECT = 960 / 600;
+      var mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (mobile) document.body.classList.add("mobile");
+
+      // Largest game area with the build's aspect ratio that fits above the controls.
+      function fit() {
+        var cs = getComputedStyle(stage);
+        var w = stage.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+        var h = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        if (mobile) { frame.style.width = w + "px"; frame.style.height = h + "px"; return; }
+        var fw = Math.min(w, h * ASPECT);
+        frame.style.width = Math.floor(fw) + "px";
+        frame.style.height = Math.floor(fw / ASPECT) + "px";
+      }
+      window.addEventListener("resize", fit);
+      fit();
+
+      function unityShowBanner(msg, type) {
+        var banner = document.getElementById("warning");
+        var div = document.createElement("div");
+        div.textContent = msg;
+        if (type == "error") div.style.background = "#ffd7d0";
+        else if (type == "warning") div.style.background = "#fff3b0";
+        banner.appendChild(div);
+        banner.style.display = "block";
+        if (type != "error") setTimeout(function () {
+          banner.removeChild(div);
+          if (!banner.children.length) banner.style.display = "none";
+        }, 5000);
+      }
+
+      var buildUrl = "Build";
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + "/Build-Web.data.br",
+        frameworkUrl: buildUrl + "/Build-Web.framework.js.br",
+        codeUrl: buildUrl + "/Build-Web.wasm.br",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "PublicHousePinball",
+        productVersion: "0.1.0",
+        showBanner: unityShowBanner,
+      };
+
+      var script = document.createElement("script");
+      script.src = buildUrl + "/Build-Web.loader.js";
+      script.onload = function () {
+        createUnityInstance(canvas, config, function (progress) {
+          document.getElementById("bar-fill").style.width = 100 * progress + "%";
+        }).then(function (unityInstance) {
+          document.getElementById("loading").style.display = "none";
+          canvas.focus();
+          document.getElementById("fullscreen").onclick = function () { unityInstance.SetFullscreen(1); };
+        }).catch(function (message) {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
