@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Unity WebGL build output (minified, generated code).
+    "public/public-house-pinball/**",
   ]),
 ]);
 

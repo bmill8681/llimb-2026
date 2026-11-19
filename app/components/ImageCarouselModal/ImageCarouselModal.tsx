@@ -18,6 +18,14 @@ export function ImageCarouselModal({
   onClose,
 }: ImageCarouselModalProps) {
   const [currentIndex, setCurrentIndex] = useState(activeImage);
+  const [prevActiveImage, setPrevActiveImage] = useState(activeImage);
+
+  // Reset to the newly selected image when the parent changes it (adjust state during render
+  // rather than in an effect, to avoid a cascading re-render).
+  if (activeImage !== prevActiveImage) {
+    setPrevActiveImage(activeImage);
+    setCurrentIndex(activeImage);
+  }
 
   const handlePrevious = useCallback(() => {
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
@@ -26,10 +34,6 @@ export function ImageCarouselModal({
   const handleNext = useCallback(() => {
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   }, [images.length]);
-
-  useEffect(() => {
-    setCurrentIndex(activeImage);
-  }, [activeImage]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
